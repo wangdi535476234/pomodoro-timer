@@ -240,6 +240,44 @@ header h1 {
     color: var(--text-muted);
 }
 
+/* Custom Time */
+.custom-time-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    margin-bottom: 1.5rem;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.custom-time-row label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+#custom-minutes {
+    width: 70px;
+    padding: 0.45rem 0.5rem;
+    border: 1px solid var(--surface-light);
+    border-radius: 8px;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 0.9rem;
+    font-family: inherit;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+#custom-minutes:focus {
+    border-color: var(--accent);
+}
+
 /* Task Section */
 .task-section {
     background: var(--surface);

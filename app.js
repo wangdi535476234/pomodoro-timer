@@ -19,10 +19,13 @@ const totalSessionsEl = document.getElementById('total-sessions');
 const taskInput = document.getElementById('task-input');
 const addTaskBtn = document.getElementById('add-task-btn');
 const taskList = document.getElementById('task-list');
+const customMinutesInput = document.getElementById('custom-minutes');
+const customTimeRow = document.getElementById('custom-time-row');
 
 // State
 let currentMode = 'work';
 let currentDuration = 25; // minutes
+let customDuration = loadCustomDuration(); // custom minutes
 let timeRemaining = 25 * 60; // seconds
 let totalSeconds = 25 * 60;
 let timerInterval = null;
@@ -163,7 +166,16 @@ function getStatusText() {
 function switchMode(mode) {
     currentMode = mode;
     const btn = document.querySelector(`[data-mode="${mode}"]`);
-    currentDuration = parseInt(btn.dataset.duration);
+
+    if (mode === 'custom') {
+        currentDuration = customDuration;
+        customTimeRow.style.display = 'flex';
+        customMinutesInput.value = customDuration;
+    } else {
+        currentDuration = parseInt(btn.dataset.duration);
+        customTimeRow.style.display = 'none';
+    }
+
     timeRemaining = currentDuration * 60;
     totalSeconds = timeRemaining;
 
@@ -175,7 +187,8 @@ function switchMode(mode) {
     const colors = {
         'work': '#e74c3c',
         'short-break': '#3498db',
-        'long-break': '#2ecc71'
+        'long-break': '#2ecc71',
+        'custom': '#9b59b6'
     };
     progressRing.style.stroke = colors[mode];
 
@@ -194,6 +207,44 @@ modeBtns.forEach(btn => {
         switchMode(btn.dataset.mode);
     });
 });
+
+// Custom minutes input: update duration in real time
+const customBtn = document.querySelector('[data-mode="custom"]');
+
+customMinutesInput.addEventListener('input', () => {
+    let val = parseInt(customMinutesInput.value);
+    if (isNaN(val) || val < 1) val = 1;
+    if (val > 120) val = 120;
+    customMinutesInput.value = val;
+    customDuration = val;
+    saveCustomDuration(val);
+    customBtn.textContent = `⚙ 自定义 ${val}分钟`;
+
+    if (currentMode === 'custom') {
+        currentDuration = val;
+        timeRemaining = val * 60;
+        totalSeconds = timeRemaining;
+        updateDisplay();
+        statusEl.textContent = '准备开始';
+    }
+});
+
+// ─────────────────────────────────────
+// Custom Duration Persistence
+// ─────────────────────────────────────
+
+function loadCustomDuration() {
+    try {
+        const saved = localStorage.getItem('pomodoro-custom-duration');
+        return saved ? parseInt(saved) : 30;
+    } catch (e) {
+        return 30;
+    }
+}
+
+function saveCustomDuration(val) {
+    localStorage.setItem('pomodoro-custom-duration', val);
+}
 
 // ─────────────────────────────────────
 // Stats
@@ -342,6 +393,9 @@ document.addEventListener('keydown', (e) => {
         case 'Digit3':
             switchMode('long-break');
             break;
+        case 'Digit4':
+            switchMode('custom');
+            break;
     }
 });
 
@@ -350,9 +404,10 @@ document.addEventListener('keydown', (e) => {
 // ─────────────────────────────────────
 
 progressRing.style.strokeDasharray = CIRCUMFERENCE;
+customMinutesInput.value = customDuration;
 updateDisplay();
 updateStatsDisplay();
 renderTasks();
 
 console.log('🍅 番茄钟已就绪！');
-console.log('⌨ 快捷键：空格=开始/暂停  R=重置  1=工作  2=短休息  3=长休息');
+console.log('⌨ 快捷键：空格=开始/暂停  R=重置  1=工作  2=短休息  3=长休息  4=自定义');

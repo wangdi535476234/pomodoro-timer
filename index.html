@@ -17,6 +17,12 @@
             <button class="mode-btn active" data-mode="work" data-duration="25">🍅 工作 25分钟</button>
             <button class="mode-btn" data-mode="short-break" data-duration="5">☕ 短休息 5分钟</button>
             <button class="mode-btn" data-mode="long-break" data-duration="15">🌴 长休息 15分钟</button>
+            <button class="mode-btn" data-mode="custom" data-duration="30">⚙ 自定义</button>
+        </div>
+
+        <div class="custom-time-row" id="custom-time-row" style="display:none;">
+            <label for="custom-minutes">自定义时间（分钟）：</label>
+            <input type="number" id="custom-minutes" value="30" min="1" max="120" step="1">
         </div>
 
         <div class="timer-display">
