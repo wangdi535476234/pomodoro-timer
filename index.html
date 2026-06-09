@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>番茄钟 - Pomodoro Timer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🍅 番茄钟</h1>
+            <p class="subtitle">专注工作，高效时间管理</p>
+        </header>
+
+        <div class="mode-selector">
+            <button class="mode-btn active" data-mode="work" data-duration="25">🍅 工作 25分钟</button>
+            <button class="mode-btn" data-mode="short-break" data-duration="5">☕ 短休息 5分钟</button>
+            <button class="mode-btn" data-mode="long-break" data-duration="15">🌴 长休息 15分钟</button>
+        </div>
+
+        <div class="timer-display">
+            <svg class="progress-ring" viewBox="0 0 200 200">
+                <circle class="progress-ring-bg" cx="100" cy="100" r="90" />
+                <circle class="progress-ring-fill" cx="100" cy="100" r="90" />
+            </svg>
+            <div class="timer-text">
+                <span id="minutes">25</span>
+                <span>:</span>
+                <span id="seconds">00</span>
+            </div>
+            <div class="timer-status" id="status">准备开始</div>
+        </div>
+
+        <div class="controls">
+            <button id="start-btn" class="control-btn primary">▶ 开始</button>
+            <button id="pause-btn" class="control-btn warning" disabled>⏸ 暂停</button>
+            <button id="reset-btn" class="control-btn danger">↺ 重置</button>
+        </div>
+
+        <div class="stats">
+            <div class="stat-item">
+                <span class="stat-value" id="session-count">0</span>
+                <span class="stat-label">今日番茄</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value" id="total-time">0m</span>
+                <span class="stat-label">今日专注</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value" id="total-sessions">0</span>
+                <span class="stat-label">累计番茄</span>
+            </div>
+        </div>
+
+        <div class="task-section">
+            <h3>📝 当前任务</h3>
+            <div class="task-input-wrapper">
+                <input type="text" id="task-input" placeholder="输入当前要做的事情..." maxlength="100">
+                <button id="add-task-btn">添加</button>
+            </div>
+            <ul id="task-list"></ul>
+        </div>
+    </div>
+
+    <audio id="alarm-sound" preload="auto">
+        <source src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" type="audio/ogg">
+    </audio>
+
+    <script src="app.js"></script>
+</body>
+</html>
